@@ -51,7 +51,11 @@ async def eksekusi_python(req: Request, x_token: str | None = Header(default=Non
         raise HTTPException(status_code=422, detail="field 'skrip_utuh' wajib diisi")
 
     try:
-        ruang_kerja = {"data_target": data_target, "hasil_komputasi": []}
+        ruang_kerja = {
+            "data_pecahan": data_target,  # nama sesuai spek n8n
+            "data_target": data_target,  # alias kompatibilitas
+            "hasil_komputasi": [],
+        }
         exec(skrip, globals(), ruang_kerja)
         return {"status": "sukses", "hasil": ruang_kerja.get("hasil_komputasi", [])}
     except Exception as e:
